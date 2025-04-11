@@ -1,0 +1,40 @@
+services:
+
+  usersapp:
+    build:
+      context: .
+      dockerfile: UsersApp.API/Dockerfile
+    container_name: usersapp_container
+    ports:
+      - "8080:8080"
+    depends_on:
+      - sqlserver
+      - mongodb
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver_container_usersapp
+    restart: always
+    environment:
+      SA_PASSWORD: "Coti@2025"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1434:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+
+  mongodb:
+    image: mongo:6.0
+    container_name: mongodb_container_usersapp
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "admin"
+      MONGO_INITDB_ROOT_PASSWORD: "admin123"
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongodb_data:/data/db      
+
+volumes:
+  sqlserver_data:
+  mongodb_data:
