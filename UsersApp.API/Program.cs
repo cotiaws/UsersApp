@@ -28,19 +28,16 @@ builder.Services.AddJwtSecurity(builder.Configuration);
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+app.MapOpenApi();
+app.UseSwagger();
+app.UseSwaggerUI();
+app.MapScalarApiReference(options =>
 {
-    app.MapOpenApi();
-    app.UseSwagger(); 
-    app.UseSwaggerUI();
-    app.MapScalarApiReference(options =>
-    {
-        options
-        .WithTitle("API de usuários - COTI Informática")
-        .WithTheme(ScalarTheme.BluePlanet)
-        .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
-    });
-}
+    options
+    .WithTitle("API de usuários - COTI Informática")
+    .WithTheme(ScalarTheme.BluePlanet)
+    .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
+});
 
 //app.UseSeriLogConfigExtension();
 
